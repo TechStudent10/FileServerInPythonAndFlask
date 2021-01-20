@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>{{repo_name}}</title>
+		</head>
+		<body>
+			<p>
+				<ul>
+					{% for file in files %}
+						<li>{{file}}</li>
+					{% endfor %}
+				</ul>
+			</p>
+		</body>
+	</html>
+{% endblock %}
