@@ -1,2 +1,2 @@
-# GithubClone
- A GitHub Clone made in Python and Flask
+# FileServerInPythonAndFlask
+ A File Server made in Python and Flask
