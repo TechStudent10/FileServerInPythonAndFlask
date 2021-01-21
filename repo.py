@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, redirect, url_for
-from pathlib import Path
 
 import os
 
@@ -14,33 +13,30 @@ def openRepoOrUser(path):
 
 	# Split the path into a list
 	pathList = path.split("/")
-
-	if len(pathList) == 1:
-		user = pathList[0]
-		if user in os.listdir('repos'):
-			return "User page."
-		else:
-			return "User doesn't exist."
-
-	if len(pathList) >= 2:
-		path = ""
-		count = 0
-		for p in pathList:
-			count += 1
-			if count == 1:
-				path = p
+	# If the length of the path is equal to two and handle it.
+	if len(pathList) == 2:
+		# Username is the first object in pathList
+		username = pathList[0]
+		# If the username is in the repos folder and handle it.
+		if username in os.listdir("repos"):
+			# Repo is the second object in pathList
+			repo = pathList[1]
+			# Repos is a list of all the repos/the username defined above.
+			repos = os.path.join("repos", username)
+			# If the repo is in the repos/the username defined above and handle it.
+			if repo in os.listdir(repos):
+				# Path is a list of repos/the username defined above/the repo defined above.
+				path = os.path.join("repos", username, repo)
+				# Files is a list of the path above
+				files = os.listdir(path)
+				# Render the repo.html template with username=username, repo_name=repo and files=files
+				return render_template('repo.html', username=username, repo_name=repo, files=files)
 			else:
-				path = os.path.join(path, p)
-
-		pathVar = Path(path)
-
-		if pathVar.is_dir():
-			return render_template("repo.html", files=os.listdir(path))
+				# Return this message if the repository doesn't exist.
+				return "Repository doesn't exist."
 		else:
-			file = open(path, "r")
-			data = file.read()
-			file.close()
-			return render_template("file.html", file={"name": os.basename(path), "content": data})
+			# Return this message if the user doesn't exist.
+			return "User doesn't exist."
 	
 	if len(pathList) == 3:
 		username = pathList[0]
